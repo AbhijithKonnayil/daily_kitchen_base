@@ -4,16 +4,24 @@ class ItemCategory {
   int id;
   String title;
   double cleaningCharge;
+  bool hide;
   String image;
   Uint8List imageBytes;
 
-  ItemCategory({this.id, this.title, this.cleaningCharge, this.image,this.imageBytes});
+  ItemCategory(
+      {this.id,
+      this.title,
+      this.cleaningCharge,
+      this.hide,
+      this.image,
+      this.imageBytes});
 
   ItemCategory.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     title = json['title'];
     cleaningCharge = json['cleaning_charge'];
     image = json['image'];
+    hide = json['hide'];
     imageBytes = json['imageBytes'];
   }
 
@@ -23,6 +31,7 @@ class ItemCategory {
     data['title'] = this.title;
     data['cleaning_charge'] = this.cleaningCharge;
     data['image'] = this.image;
+    data['hide'] = this.hide;
     return data;
   }
 }

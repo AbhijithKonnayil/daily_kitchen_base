@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 
 class BaseRepository {
   //static String BASE_URL = "http://15.206.66.115/";
-  static String BASE_URL = "http://192.168.1.6:8000/";
+  static String BASE_URL = "http://192.168.1.8:8000/";
 
   String endpointURL(String endpoint) {
     return BASE_URL + endpoint + "/";

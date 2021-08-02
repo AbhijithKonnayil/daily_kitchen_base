@@ -31,17 +31,17 @@ class User {
     username = json['username'];
     firstName = json['first_name'];
     token = json['token'];
-    address = json['address'];
+    // address = json['address'];
     isAdmin = json['is_superuser'];
     isStaff = json['is_staff'];
 
 //profile
-    address = json['profile']['address'];
-    landmark = json['profile']['landmark'];
-    location = json['profile']['location'];
-    alternatePhone = json['profile']['alternate_phone'];
-    profileImage = json['profile']['profile_image'];
-    deviceToken = json['profile']['device_token'];
+    //address = json['profile']['address'];
+    //landmark = json['profile']['landmark'];
+    // location = json['profile']['location'];
+    // alternatePhone = json['profile']['alternate_phone'];
+    // profileImage = json['profile']['profile_image'];
+    // deviceToken = json['profile']['device_token'];
   }
 
   User.fromStaffJson(Map<String, dynamic> json) {
@@ -55,7 +55,7 @@ class User {
       {@required this.username,
       @required this.password,
       @required this.deviceToken});
-      
+
   User.phoneLoginCredentials({@required this.username});
 
   Map<String, dynamic> toJson() {

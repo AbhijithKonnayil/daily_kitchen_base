@@ -35,10 +35,35 @@ class ItemRepository extends BaseRepository {
     }
   }
 
+  getAdminItems({category}) async {
+    try {
+      if (category != null) {
+        return await getReq(
+            endpoint: "item/admin-view/$category",
+            userRepository: userRepository);
+      } else {
+        return await getReq(
+            endpoint: "item/admin-view", userRepository: userRepository);
+      }
+    } catch (e) {
+      throw (e);
+    }
+  }
+
   getOfferItems({category}) async {
     try {
       return await getReq(
           endpoint: "item/view_offer", userRepository: userRepository);
+    } catch (e) {
+      throw (e);
+    }
+  }
+
+  getAdminOfferItems({category}) async {
+    try {
+      return await getReq(
+          endpoint: "item/admin-view/view_offer",
+          userRepository: userRepository);
     } catch (e) {
       throw (e);
     }
@@ -241,10 +266,35 @@ class ItemRepository extends BaseRepository {
   getCategories() async {
     try {
       var response = await getReq(
-          endpoint: 'item/category', userRepository: userRepository);
+          endpoint: 'item/category/admin-view', userRepository: userRepository);
       return response;
     } catch (e) {
       throw (e.toString());
+    }
+  }
+
+  deleteOrders(String fromDate, String toDate) async {
+    try {
+      Map data = {'from_date': fromDate, "to_date": toDate};
+      var response = await postReq(
+          endpoint: 'order/delete', body: data, userRepository: userRepository);
+      return response;
+    } catch (e) {
+      throw (e.toString());
+    }
+  }
+
+  deleteOrder(int orderId) async {
+    try {
+      var response = await deleteReq(
+          endpoint: 'order/delete/individual/$orderId', userRepository: userRepository);
+      if (response.statusCode == 204) {
+        return true;
+      } else {
+        throw ("Error");
+      }
+    } catch (e) {
+      return false;
     }
   }
 
@@ -260,7 +310,10 @@ class ItemRepository extends BaseRepository {
         ..fields['title'] = item.title
         ..fields['discount'] = item.discount.toString()
         ..fields['rate_per_quantity'] = item.ratePerQuantity.toString()
-        ..fields['category_id'] = item.itemCategory.id.toString();
+        ..fields['category_id'] = item.itemCategory.id.toString()
+        ..fields['description'] = item.description
+        ..fields['hide'] = item.hide.toString()
+        ..fields['rate_unit'] = item.rateUnit;
 
       var i = 0;
       for (var each in item.byteImages) {
@@ -287,7 +340,8 @@ class ItemRepository extends BaseRepository {
 
       request
         ..fields['title'] = itemCategory.title
-        ..fields['cleaning_charge'] = itemCategory.cleaningCharge.toString();
+        ..fields['cleaning_charge'] = itemCategory.cleaningCharge.toString()
+        ..fields['hide'] = itemCategory.hide.toString();
 
       if (itemCategory.imageBytes != null) {
         request.files.add(await http.MultipartFile(
